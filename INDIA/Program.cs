@@ -1,4 +1,5 @@
 using INDIA.Data;
+using INDIA.Mappings;
 using INDIA.Repository;
 using INDIA.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<IndiaDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("IndiaConnectionString")));
 
 builder.Services.AddScoped<IDistrictRepository, SQLDistrictRepository>();
+
+builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 
 var app = builder.Build();
 
