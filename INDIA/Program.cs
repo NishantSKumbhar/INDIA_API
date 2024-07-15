@@ -1,4 +1,6 @@
 using INDIA.Data;
+using INDIA.Repository;
+using INDIA.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<IndiaDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("IndiaConnectionString")));
+
+builder.Services.AddScoped<IDistrictRepository, SQLDistrictRepository>();
 
 var app = builder.Build();
 
