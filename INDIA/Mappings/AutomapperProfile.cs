@@ -10,6 +10,9 @@ namespace INDIA.Mappings
         {
             CreateMap<District, DistrictDTOOutgoing>().ReverseMap();
             CreateMap<DistrictDTOIncoming, District>().ReverseMap();
+            CreateMap<State, StateDTOOutgoing>().ReverseMap();
+            CreateMap<StateDTOIncomming,State>().ReverseMap();
+            CreateMap<Language, LanguageDTO>().ReverseMap(); 
         }
     }
 }

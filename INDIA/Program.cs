@@ -17,6 +17,7 @@ builder.Services.AddDbContext<IndiaDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("IndiaConnectionString")));
 
 builder.Services.AddScoped<IDistrictRepository, SQLDistrictRepository>();
+builder.Services.AddScoped<IStateRepository, SQLStateRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 
