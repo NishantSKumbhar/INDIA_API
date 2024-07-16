@@ -27,7 +27,8 @@ namespace INDIA.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDistricts()
+        public async Task<IActionResult> GetAllDistricts([FromQuery] string? filterOn, 
+            [FromQuery] string? filterQuery)
         {
             var districts = await this.districtRepository.GetAllDistrictsAsync();
             var districtsDTOS = mapper.Map<List<DistrictDTOOutgoing>>(districts);

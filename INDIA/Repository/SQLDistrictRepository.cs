@@ -33,9 +33,19 @@ namespace INDIA.Repository
             return district;
         }
 
-        public async Task<List<District>> GetAllDistrictsAsync()
+        public async Task<List<District>> GetAllDistrictsAsync(string? filterOn = null, string? filterQuery=null)
         {
-            return await this.indiaDbContext.Districts.ToListAsync();
+            var districts = this.indiaDbContext.Districts.AsQueryable();
+
+            // Filtering
+            if(string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    districts = districts.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+            return await districts.ToListAsync();
         }
 
         public async Task<District?> GetDistrictByIdAsync(Guid id)
