@@ -51,29 +51,43 @@ namespace INDIA.Controllers
         [HttpPost]
         public async Task<IActionResult> PostDistrict([FromBody] DistrictDTOIncoming districtDTOIncoming)
         {
+            if (ModelState.IsValid)
+            {
+                var DistrictDomainModel = mapper.Map<District>(districtDTOIncoming);
+
+                var CreatedDistrict = await this.districtRepository.CreateDistrictAsync(DistrictDomainModel);
+
+                var DistrictDTO = mapper.Map<DistrictDTOOutgoing>(CreatedDistrict);
+                return CreatedAtAction(nameof(GetDistrictById), new { id = DistrictDTO.Id }, DistrictDTO);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
             
-            var DistrictDomainModel = mapper.Map<District>(districtDTOIncoming);
-
-            var CreatedDistrict = await this.districtRepository.CreateDistrictAsync(DistrictDomainModel);
-
-            var DistrictDTO = mapper.Map<DistrictDTOOutgoing>(CreatedDistrict);
-            return CreatedAtAction(nameof(GetDistrictById), new {id = DistrictDTO.Id}, DistrictDTO);
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateDistrictById([FromRoute] Guid id, [FromBody] DistrictDTOIncoming districtDTOIncoming)
         {
-            
-            var distModel = mapper.Map<District>(districtDTOIncoming);
-            var DistrictModel = await this.districtRepository.UpdateDistrictAsync(id, distModel);
-            if(DistrictModel == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var distModel = mapper.Map<District>(districtDTOIncoming);
+                var DistrictModel = await this.districtRepository.UpdateDistrictAsync(id, distModel);
+                if (DistrictModel == null)
+                {
+                    return NotFound();
+                }
+
+                var DistrictDTO = mapper.Map<DistrictDTOOutgoing>(DistrictModel);
+                return Ok(DistrictDTO);
+            }
+            else
+            {
+                return BadRequest(ModelState);
             }
             
-            var DistrictDTO = mapper.Map<DistrictDTOOutgoing>(DistrictModel);
-            return Ok(DistrictDTO);
         }
 
         [HttpDelete]

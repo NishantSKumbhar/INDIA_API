@@ -45,25 +45,41 @@ namespace INDIA.Controllers
         [HttpPost]
         public async Task<IActionResult> PostState([FromBody] StateDTOIncomming stateDTOIncomming)
         {
-            var state = mapper.Map<State>(stateDTOIncomming);
-            var upstate = await this.stateRepository.CreateStateAsync(state);
+            if (ModelState.IsValid)
+            {
+                var state = mapper.Map<State>(stateDTOIncomming);
+                var upstate = await this.stateRepository.CreateStateAsync(state);
+
+                var StateDTO = mapper.Map<StateDTOOutgoing>(upstate);
+                return CreatedAtAction(nameof(GetStateById), new { StateDTO.Id }, StateDTO);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
             
-            var StateDTO = mapper.Map<StateDTOOutgoing>(upstate);
-            return CreatedAtAction(nameof(GetStateById), new { StateDTO.Id }, StateDTO);
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdateState([FromRoute] Guid id, [FromBody] StateDTOIncomming stateDTOIncomming)
         {
-            var stateModel = mapper.Map<State>(stateDTOIncomming);
-            var updatedState = await this.stateRepository.UpdateStateAsync(id, stateModel);
-            if (updatedState == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var stateModel = mapper.Map<State>(stateDTOIncomming);
+                var updatedState = await this.stateRepository.UpdateStateAsync(id, stateModel);
+                if (updatedState == null)
+                {
+                    return NotFound();
+                }
+                var StateDTO = mapper.Map<StateDTOOutgoing>(updatedState);
+                return Ok(StateDTO);
             }
-            var StateDTO = mapper.Map<StateDTOOutgoing>(updatedState);
-            return Ok(StateDTO);
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            
         }
 
         [HttpDelete]
