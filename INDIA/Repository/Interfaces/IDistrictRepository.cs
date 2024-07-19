@@ -7,7 +7,9 @@ namespace INDIA.Repository.Interfaces
         Task<List<District>> GetAllDistrictsAsync(string? filterOn = null, 
             string? filterQuery = null,
             string? sortBy=null,
-            bool isAscending=true);
+            bool isAscending=true,
+            int pageNumber = 1,
+            int pageSize = 1000);
         Task<District?> GetDistrictByIdAsync(Guid id);
         Task<District> CreateDistrictAsync(District district);
         Task<District?> UpdateDistrictAsync(Guid id, District district);

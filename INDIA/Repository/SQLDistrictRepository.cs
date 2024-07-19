@@ -38,7 +38,9 @@ namespace INDIA.Repository
         public async Task<List<District>> GetAllDistrictsAsync(string? filterOn = null,
             string? filterQuery=null, 
             string? sortBy = null,
-            bool isAscending = true)
+            bool isAscending = true,
+            int pageNumber = 1,
+            int pageSize = 1000)
         {
             var districts = this.indiaDbContext.Districts.AsQueryable();
 
@@ -60,7 +62,10 @@ namespace INDIA.Repository
                 }
             }
 
-                return await districts.ToListAsync();
+            // Pagination
+            var skippedResult = (pageNumber - 1) * pageSize;
+
+            return await districts.Skip(skippedResult).Take(pageSize).ToListAsync();
         }
 
         public async Task<District?> GetDistrictByIdAsync(Guid id)
