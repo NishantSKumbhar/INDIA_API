@@ -26,11 +26,14 @@ namespace INDIA.Controllers
             this.mapper = mapper;
         }
 
+        // /api/District/?filterOn=Name&filterQuery=Sangali&sortBy=Name&isAscending=true
         [HttpGet]
         public async Task<IActionResult> GetAllDistricts([FromQuery] string? filterOn, 
-            [FromQuery] string? filterQuery)
+            [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool? isAscending)
         {
-            var districts = await this.districtRepository.GetAllDistrictsAsync();
+            var districts = await this.districtRepository.GetAllDistrictsAsync(filterOn,filterQuery,sortBy,isAscending ?? true);
             var districtsDTOS = mapper.Map<List<DistrictDTOOutgoing>>(districts);
             return Ok(districtsDTOS);
         }

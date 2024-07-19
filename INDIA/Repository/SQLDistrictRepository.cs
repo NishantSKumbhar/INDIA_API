@@ -33,7 +33,12 @@ namespace INDIA.Repository
             return district;
         }
 
-        public async Task<List<District>> GetAllDistrictsAsync(string? filterOn = null, string? filterQuery=null)
+        
+
+        public async Task<List<District>> GetAllDistrictsAsync(string? filterOn = null,
+            string? filterQuery=null, 
+            string? sortBy = null,
+            bool isAscending = true)
         {
             var districts = this.indiaDbContext.Districts.AsQueryable();
 
@@ -45,7 +50,17 @@ namespace INDIA.Repository
                     districts = districts.Where(x => x.Name.Contains(filterQuery));
                 }
             }
-            return await districts.ToListAsync();
+
+            // Sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    districts = isAscending ? districts.OrderBy(x => x.Name) :districts.OrderByDescending(x => x.Name);
+                }
+            }
+
+                return await districts.ToListAsync();
         }
 
         public async Task<District?> GetDistrictByIdAsync(Guid id)
