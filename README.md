@@ -68,4 +68,5 @@ This project demonstrates how to build an ASP.NET Core Web API using Entity Fram
    Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
 8. **License**
-   This project is licensed under the MIT License. See the LICENSE file for details.
+   This project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007.
+   See the LICENSE file for details.
