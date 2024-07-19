@@ -3,6 +3,7 @@ using INDIA.Data;
 using INDIA.Models.Domain;
 using INDIA.Models.DTO;
 using INDIA.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace INDIA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // now any method inside this controller can not be accessed publicaly i.e. has to be accessed by an authenticated person,
     public class DistrictsController : ControllerBase
     {
         private readonly IndiaDbContext indiaDbContext;

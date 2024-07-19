@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<IndiaDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("IndiaConnectionString")));
+builder.Services.AddDbContext<IndiaAuthDbContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("IndiaAuthConnectionString")));
 
 builder.Services.AddScoped<IDistrictRepository, SQLDistrictRepository>();
 builder.Services.AddScoped<IStateRepository, SQLStateRepository>();

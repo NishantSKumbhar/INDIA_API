@@ -5,7 +5,7 @@ namespace INDIA.Data
 {
     public class IndiaDbContext: DbContext
     {
-        public IndiaDbContext(DbContextOptions dbContextOptions):base(dbContextOptions)
+        public IndiaDbContext(DbContextOptions<IndiaDbContext> dbContextOptions):base(dbContextOptions)
         {
             
         }
