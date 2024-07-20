@@ -12,7 +12,7 @@ namespace INDIA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // now any method inside this controller can not be accessed publicaly i.e. has to be accessed by an authenticated person,
+    //[Authorize] // now any method inside this controller can not be accessed publicaly i.e. has to be accessed by an authenticated person,
     public class DistrictsController : ControllerBase
     {
         private readonly IndiaDbContext indiaDbContext;
@@ -30,6 +30,7 @@ namespace INDIA.Controllers
 
         // /api/District/?filterOn=Name&filterQuery=Sangali&sortBy=Name&isAscending=true&pageNumber=1&pageSize=10
         [HttpGet]
+        [Authorize(Roles ="Reader")]
         public async Task<IActionResult> GetAllDistricts([FromQuery] string? filterOn, 
             [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy,
@@ -44,6 +45,7 @@ namespace INDIA.Controllers
 
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetDistrictById([FromRoute] Guid id)
         {
             var districtDomainModel = await this.districtRepository.GetDistrictByIdAsync(id);
@@ -57,6 +59,7 @@ namespace INDIA.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> PostDistrict([FromBody] DistrictDTOIncoming districtDTOIncoming)
         {
             if (ModelState.IsValid)
@@ -77,6 +80,7 @@ namespace INDIA.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateDistrictById([FromRoute] Guid id, [FromBody] DistrictDTOIncoming districtDTOIncoming)
         {
             if (ModelState.IsValid)
@@ -100,6 +104,8 @@ namespace INDIA.Controllers
 
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
+        //  [Authorize(Roles = "Writer,Reader")]
         public async Task<IActionResult> DeleteDistrictById([FromRoute] Guid id)
         {
             var DistrictModel = await this.districtRepository.DeleteDistrictByIdAsync(id);
